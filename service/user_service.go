@@ -68,16 +68,27 @@ func GetUserInfo(request *request.LoginRequest, claims *utils.UserClaims) (*User
 	if userInfo == nil {
 		return nil, bizerror.UserNotExist
 	}
-	userInfo.Password = "";
+	userInfo.Password = ""
 	return &UserInfo{
 		Token: "",
-		User: *userInfo,
+		User:  *userInfo,
 	}, nil
 }
-
 
 type UserInfo struct {
 	Token string     `json:"token"`
 	User  model.User `json:"user"`
 }
 
+// DeleteUser deletes the authenticated user identified by claims
+func DeleteUser(claims *utils.UserClaims) error {
+	userId := claims.UserId
+	userInfo, err := dao.GetUserByID(uint(userId))
+	if err != nil {
+		return err
+	}
+	if userInfo == nil || userInfo.ID == 0 {
+		return bizerror.UserNotExist
+	}
+	return dao.DeleteUser(uint(userId))
+}

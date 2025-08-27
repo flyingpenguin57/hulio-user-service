@@ -12,7 +12,8 @@ import (
 
 func RegisterUserRoutes(r *gin.Engine) {
 	r.POST("/api/v1/user/login", Login)
-	r.POST("/api/v1/user/register", Login)
+	r.POST("/api/v1/user/register", Register)
+	r.DELETE("/api/v1/user", DeleteUser)
 	r.GET("/users/mock-panic", MockPanic) // 用于测试中间件的 panic 处理
 }
 
@@ -22,6 +23,11 @@ func Register(c *gin.Context) {
 		c.Error(err)
 		return
 	}
+	if err := service.Register(&req); err != nil {
+		c.Error(err)
+		return
+	}
+	response.Success(c, nil)
 }
 
 func Login(c *gin.Context) {
@@ -40,18 +46,42 @@ func Login(c *gin.Context) {
 }
 
 func GetUserInfo(c *gin.Context) {
-    claims, exists := c.Get("claims")
-    if !exists {
+	claims, exists := c.Get("claims")
+	if !exists {
 		c.Error(errors.New("claims not exist"))
-        return
-    }
-    uc, ok := claims.(*utils.UserClaims)
+		return
+	}
+	uc, ok := claims.(*utils.UserClaims)
 	if !ok {
 		c.Error(errors.New("claims type error"))
 		return
 	}
-	service.GetUserInfo(nil, uc)
-    
+	if res, err := service.GetUserInfo(nil, uc); err != nil {
+		c.Error(err)
+		return
+	} else {
+		response.Success(c, res)
+	}
+
+}
+
+func DeleteUser(c *gin.Context) {
+	claims, exists := c.Get("claims")
+	if !exists {
+		c.Error(errors.New("claims not exist"))
+		return
+	}
+	uc, ok := claims.(*utils.UserClaims)
+	if !ok {
+		c.Error(errors.New("claims type error"))
+		return
+	}
+
+	if err := service.DeleteUser(uc); err != nil {
+		c.Error(err)
+		return
+	}
+	response.Success(c, nil)
 }
 
 func MockPanic(c *gin.Context) {

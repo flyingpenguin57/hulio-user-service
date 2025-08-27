@@ -24,9 +24,10 @@ func GetUserByUsername(username string) (*model.User, error) {
 	return &user, err
 }
 
-// 更新用户
+// 更新用户, 只更新非0字段
 func UpdateUser(user *model.User) error {
-	return config.DB.Save(user).Error
+	result := config.DB.Model(&model.User{}).Where("id = ?", user.ID).Updates(user)
+	return result.Error
 }
 
 // 删除用户
