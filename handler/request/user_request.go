@@ -14,3 +14,12 @@ type RegisterRequest struct {
 	Phone    string `json:"phone"`
 	Extinfo  string `json:"extinfo"`
 }
+
+// UpdateUserRequest supports partial updates; empty fields are ignored
+type UpdateUserRequest struct {
+	Nickname string `json:"nickname"`
+	Avatar   string `json:"avatar"`
+	Email    string `json:"email"`
+	Phone    string `json:"phone"`
+	Extinfo  string `json:"extinfo"`
+}

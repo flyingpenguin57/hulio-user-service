@@ -14,6 +14,7 @@ func RegisterUserRoutes(r *gin.Engine) {
 	r.POST("/api/v1/user/login", Login)
 	r.POST("/api/v1/user/register", Register)
 	r.DELETE("/api/v1/user", DeleteUser)
+	r.PUT("/api/v1/user", UpdateUser)
 	r.GET("/users/mock-panic", MockPanic) // 用于测试中间件的 panic 处理
 }
 
@@ -82,6 +83,30 @@ func DeleteUser(c *gin.Context) {
 		return
 	}
 	response.Success(c, nil)
+}
+
+func UpdateUser(c *gin.Context) {
+	var req request.UpdateUserRequest
+	if err := c.ShouldBindJSON(&req); err != nil {
+		c.Error(err)
+		return
+	}
+	claims, exists := c.Get("claims")
+	if !exists {
+		c.Error(errors.New("claims not exist"))
+		return
+	}
+	uc, ok := claims.(*utils.UserClaims)
+	if !ok {
+		c.Error(errors.New("claims type error"))
+		return
+	}
+	if res, err := service.UpdateUser(&req, uc); err != nil {
+		c.Error(err)
+		return
+	} else {
+		response.Success(c, res)
+	}
 }
 
 func MockPanic(c *gin.Context) {

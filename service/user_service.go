@@ -92,3 +92,39 @@ func DeleteUser(claims *utils.UserClaims) error {
 	}
 	return dao.DeleteUser(uint(userId))
 }
+
+// UpdateUser updates authenticated user's info with non-empty fields
+func UpdateUser(req *request.UpdateUserRequest, claims *utils.UserClaims) (*UserInfo, error) {
+	userId := claims.UserId
+	user, err := dao.GetUserByID(uint(userId))
+	if err != nil {
+		return nil, err
+	}
+	if user == nil {
+		return nil, bizerror.UserNotExist
+	}
+
+	// Apply partial updates
+	if req.Nickname != "" {
+		user.Nickname = req.Nickname
+	}
+	if req.Avatar != "" {
+		user.Avatar = req.Avatar
+	}
+	if req.Email != "" {
+		user.Email = req.Email
+	}
+	if req.Phone != "" {
+		user.Phone = req.Phone
+	}
+	if req.Extinfo != "" {
+		user.Extinfo = req.Extinfo
+	}
+
+	if err := dao.UpdateUser(user); err != nil {
+		return nil, err
+	}
+
+	user.Password = ""
+	return &UserInfo{Token: "", User: *user}, nil
+}
