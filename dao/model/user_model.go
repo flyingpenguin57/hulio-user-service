@@ -13,16 +13,15 @@ const TableNameUser = "user"
 // User mapped from table <user>
 type User struct {
 	ID        int64     `gorm:"column:id;primaryKey;autoIncrement:true" json:"id"`
-	Username  string    `gorm:"column:username;not null" json:"username"`
-	Password  string    `gorm:"column:password;not null" json:"password"`
-	Salt      string    `gorm:"column:salt;not null" json:"salt"`
-	Nickname  string    `gorm:"column:nickname" json:"nickname"`
-	Avatar    string    `gorm:"column:avatar" json:"avatar"`
-	Email     string    `gorm:"column:email" json:"email"`
-	Phone     string    `gorm:"column:phone" json:"phone"`
-	Extinfo   string    `gorm:"column:extinfo" json:"extinfo"`
-	CreatedAt time.Time `gorm:"column:created_at;default:CURRENT_TIMESTAMP" json:"created_at"`
-	UpdatedAt time.Time `gorm:"column:updated_at;default:CURRENT_TIMESTAMP" json:"updated_at"`
+	Username  string    `gorm:"column:username;type:varchar(191);not null;uniqueIndex" json:"username"`
+	Password  string    `gorm:"column:password;type:varchar(255);not null" json:"password"`
+	Nickname  string    `gorm:"column:nickname;type:varchar(255)" json:"nickname"`
+	Avatar    string    `gorm:"column:avatar;type:varchar(255)" json:"avatar"`
+	Email     string    `gorm:"column:email;type:varchar(255)" json:"email"`
+	Phone     string    `gorm:"column:phone;type:varchar(50)" json:"phone"`
+	Extinfo   string    `gorm:"column:extinfo;type:text" json:"extinfo"`
+	CreatedAt time.Time `gorm:"column:created_at;type:datetime;autoCreateTime" json:"created_at"`
+	UpdatedAt time.Time `gorm:"column:updated_at;type:datetime;autoUpdateTime" json:"updated_at"`
 }
 
 // TableName User's table name

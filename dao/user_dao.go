@@ -1,8 +1,11 @@
 package dao
 
 import (
+	"errors"
 	"hulio-user-service/config"
 	"hulio-user-service/dao/model"
+
+	"gorm.io/gorm"
 )
 
 // 新建用户
@@ -21,6 +24,9 @@ func GetUserByID(id uint) (*model.User, error) {
 func GetUserByUsername(username string) (*model.User, error) {
 	var user model.User
 	err := config.DB.Where("username = ?", username).First(&user).Error
+	if errors.Is(err, gorm.ErrRecordNotFound) {
+		return nil, nil // 没找到，但不是错误
+	}	
 	return &user, err
 }
 

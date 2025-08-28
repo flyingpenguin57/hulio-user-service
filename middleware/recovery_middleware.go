@@ -1,7 +1,9 @@
 package middleware
 
 import (
+	"errors"
 	"fmt"
+	"hulio-user-service/constants/bizerror"
 	"hulio-user-service/handler/response"
 	"runtime/debug"
 
@@ -31,7 +33,12 @@ func RecoveryMiddleware() gin.HandlerFunc {
 		if len(c.Errors) > 0 {
 			// 取第一个错误
 			err := c.Errors[0].Err
-			response.Fail(c, 400, err.Error())
+			var be *bizerror.BizError
+			if errors.As(err, &be) {
+				response.Fail(c, be.Code, be.Message)
+			} else {
+				response.Fail(c, 500, err.Error())
+			}
 			c.Abort()
 			return
 		}

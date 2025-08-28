@@ -3,8 +3,10 @@ package main
 import (
 	"hulio-user-service/config"
 	"hulio-user-service/handler"
+	"hulio-user-service/handler/response"
 	"hulio-user-service/middleware"
 	"time"
+
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
 )
@@ -33,6 +35,14 @@ func main() {
 
 	//register user routes
 	handler.RegisterUserRoutes(r)
+
+	// standardize 404/405 responses to JSON to keep client decoding stable
+	r.NoRoute(func(c *gin.Context) {
+		response.Fail(c, 404, "route not found")
+	})
+	r.NoMethod(func(c *gin.Context) {
+		response.Fail(c, 405, "method not allowed")
+	})
 
 	r.Run(":8080")
 }

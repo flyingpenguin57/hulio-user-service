@@ -13,9 +13,10 @@ import (
 func RegisterUserRoutes(r *gin.Engine) {
 	r.POST("/api/v1/user/login", Login)
 	r.POST("/api/v1/user/register", Register)
+	r.GET("/api/v1/user", GetUserInfo)
 	r.DELETE("/api/v1/user", DeleteUser)
 	r.PUT("/api/v1/user", UpdateUser)
-	r.GET("/users/mock-panic", MockPanic) // 用于测试中间件的 panic 处理
+	r.GET("/api/v1/mock/panic", MockPanic) // 用于测试中间件的 panic 处理
 }
 
 func Register(c *gin.Context) {

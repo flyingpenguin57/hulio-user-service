@@ -10,6 +10,16 @@ import (
 
 func Register(request *request.RegisterRequest) error {
 
+	//check if username exist
+	if user, err := dao.GetUserByUsername(request.Username); err != nil {
+		return err
+	} else {
+		if user != nil {
+			return bizerror.UsernameExisted
+		}
+	}
+
+	//hash password
 	hashedPwd, err := utils.HashPassword(request.Password)
 	if err != nil {
 		return err

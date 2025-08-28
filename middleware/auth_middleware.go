@@ -4,6 +4,7 @@ import (
 	constant "hulio-user-service/constants"
 	"hulio-user-service/constants/bizerror"
 	"hulio-user-service/utils"
+
 	"github.com/gin-gonic/gin"
 	"golang.org/x/exp/slices"
 )
@@ -11,7 +12,7 @@ import (
 func AuthMiddleware() gin.HandlerFunc {
 	return func(c *gin.Context) {
 		// get request path
-		path := c.FullPath()
+		path := c.Request.URL.Path
 		// if whitelist contains path
 		if slices.Contains(constant.ApiWhiteList, path) {
 			c.Next()
