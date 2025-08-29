@@ -15,9 +15,9 @@ func InitDB() {
     env := os.Getenv("ENV") // ENV 可以是 "prod" 或 "test"
 	var dsn string
     switch env {
-    case "prod":
+    case "PROD":
         dsn = os.Getenv("MYSQL_DSN_PROD")
-    case "test":
+    case "TEST":
         dsn = os.Getenv("MYSQL_DSN_TEST")
     default:
         dsn = "root:123456@tcp(localhost:3306)/hulio_user?charset=utf8mb4&parseTime=True&loc=Local" // 默认值

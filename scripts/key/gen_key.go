@@ -17,7 +17,7 @@ func main() {
 	}
 
 	// 保存私钥到文件
-	privateFile, err := os.Create(".././private_key.pem")
+	privateFile, err := os.Create("./test/private_key.pem")
 	if err != nil {
 		panic(err)
 	}
@@ -38,7 +38,7 @@ func main() {
 		panic(err)
 	}
 
-	publicFile, err := os.Create("public_key.pem")
+	publicFile, err := os.Create("./test/public_key.pem")
 	if err != nil {
 		panic(err)
 	}

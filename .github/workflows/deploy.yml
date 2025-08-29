@@ -6,6 +6,57 @@ on:
       - main  # 推送到 main 分支触发
 
 jobs:
+  test:
+    runs-on: ubuntu-latest
+    services:
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: root
+          MYSQL_DATABASE: hulio_user_service_test
+          MYSQL_USER: testuser
+          MYSQL_PASSWORD: testpass
+        ports:
+          - 3306:3306
+        options: >-
+          --health-cmd="mysqladmin ping -h localhost -u root -proot"
+          --health-interval=10s
+          --health-timeout=5s
+          --health-retries=5
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Wait for MySQL to be ready
+        run: |
+          for i in {30..0}; do
+            if mysql -h 127.0.0.1 -u root -proot -e 'SELECT 1;' &> /dev/null; then
+              echo "MySQL is up!"
+              break
+            fi
+            echo "Waiting for MySQL..."
+            sleep 2
+          done
+
+      - name: Run DB initialization script
+        run: |
+          mysql -h 127.0.0.1 -u root -proot testdb < ./scripts/db/init-test-db.sql
+
+      - name: Start service
+        env:
+          ENV: "TEST"
+          MYSQL_DSN_TEST: "testuser:testpass@tcp(127.0.0.1:3306)/hulio_user_service_test?charset=utf8mb4&parseTime=True&loc=Local"
+          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY_TEST }}
+        run: |
+          # 后台启动服务
+          nohup go run main.go &
+          # 等待服务启动完成
+          sleep 5
+
+      - name: Run integration tests
+        run: go test ./... -v
+
   build-and-push:
     runs-on: ubuntu-latest
 

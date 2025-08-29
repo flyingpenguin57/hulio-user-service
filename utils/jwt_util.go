@@ -53,6 +53,16 @@ oN3Oo81dOt95l+ccGbqZ/7x9VjECWqneAzr3lbLxtQYUEC5189Tl7/9kiI3mnXL2
 WQIDAQAB
 -----END PUBLIC KEY-----`
 
+const RSAPublicKeyTest = `-----BEGIN PUBLIC KEY-----
+MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA3haHfyj7Ps+XtW6Dj8Bf
+JkZ6NFgEuOnlAYW8tsOtTNjp6EN63tGOglrOyJUD2dDXgxX0w1MA8yjHf+4tGl8k
+bblfjLSFhyzKsQ29db83OoKYtFbI/4oJar92hxGmlZQx+pYAtBs0fqYoOmGmB0Wh
+gpjJ7LhLUMDH9cxzN7wjMwfhXwD0nXwzX+aHCCA7IuPtbDzQ/fgiT5FYQPnQOESk
+tz7J5to7yRRZrI7XDbYp8OZEgkHAcxqoCAxld3mNtgKpHOx6fooZ0BUzt5fKVHES
+dB0uSPPDM/bNy3ZVkvFYVBmQ/cpzLGB3vHSuyPB2GfEay1aaM6EBHiy6MF9xp2/7
+TQIDAQAB
+-----END PUBLIC KEY-----`
+
 // 解析和验证 JWT
 func ParseToken(tokenStr string) (*UserClaims, error) {
 	// 加载 RSA 公钥（用于 RS256 验签）
@@ -97,8 +107,17 @@ func loadRSAPrivateKey() (*rsa.PrivateKey, error) {
 	return key, nil
 }
 
+var env = os.Getenv("ENV")
+
 func loadRSAPublicKey() (*rsa.PublicKey, error) {
-	block, _ := pem.Decode([]byte(RSAPublicKey))
+	var block *pem.Block
+	switch env {
+	case "TEST":
+		block, _ = pem.Decode([]byte(RSAPublicKeyTest))
+	case "PROD":
+		block, _ = pem.Decode([]byte(RSAPublicKey))
+	}
+
 	if block == nil || block.Type != "PUBLIC KEY" {
 		return nil, fmt.Errorf("无效的公钥")
 	}
