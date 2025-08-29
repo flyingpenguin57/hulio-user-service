@@ -6,6 +6,7 @@ import (
 	"hulio-user-service/handler/response"
 	"hulio-user-service/service"
 	"hulio-user-service/utils"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -17,6 +18,7 @@ func RegisterUserRoutes(r *gin.Engine) {
 	r.DELETE("/api/v1/user", DeleteUser)
 	r.PUT("/api/v1/user", UpdateUser)
 	r.GET("/api/v1/mock/panic", MockPanic) // 用于测试中间件的 panic 处理
+	r.GET("/health", HealthCheck)          // 健康检查端点
 }
 
 func Register(c *gin.Context) {
@@ -113,4 +115,13 @@ func UpdateUser(c *gin.Context) {
 func MockPanic(c *gin.Context) {
 	// 模拟一个 panic
 	panic("this is a test panic")
+}
+
+func HealthCheck(c *gin.Context) {
+	// 健康检查端点，返回简单的状态信息
+	c.JSON(200, gin.H{
+		"status":    "ok",
+		"service":   "hulio-user-service",
+		"timestamp": time.Now().Unix(),
+	})
 }
