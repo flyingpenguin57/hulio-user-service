@@ -2,8 +2,8 @@ package config
 
 import (
 	"log"
+	"os"
 	"time"
-
 	"gorm.io/driver/mysql"
 	"gorm.io/gorm"
 	"gorm.io/gorm/logger"
@@ -12,7 +12,16 @@ import (
 var DB *gorm.DB
 
 func InitDB() {
-	dsn := "root:123456@tcp(127.0.0.1:3306)/hulio_user?charset=utf8mb4&parseTime=True&loc=Local"
+    env := os.Getenv("ENV") // ENV 可以是 "prod" 或 "test"
+	var dsn string
+    switch env {
+    case "prod":
+        dsn = os.Getenv("MYSQL_DSN_PROD")
+    case "test":
+        dsn = os.Getenv("MYSQL_DSN_TEST")
+    default:
+        dsn = "root:123456@tcp(localhost:3306)/hulio_user?charset=utf8mb4&parseTime=True&loc=Local" // 默认值
+    }
 
 	var err error
 	DB, err = gorm.Open(mysql.Open(dsn), &gorm.Config{
