@@ -105,7 +105,7 @@ jobs:
 
       - name: Deploy to DigitalOcean
         run: |
-          ssh -o StrictHostKeyChecking=no root@152.42.206.237 << 'EOF'
+          ssh -o StrictHostKeyChecking=no root@152.42.206.237 << EOF
             #登陆docker
             echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
 
@@ -121,7 +121,7 @@ jobs:
               --network hulio-net \
               -p 8080:8080 \
               -e ENV=PROD \
-              -e MYSQL_DSN_PROD \
-              -e JWT_PRIVATE_KEY \
+              -e MYSQL_DSN_PROD="${{ secrets.MYSQL_DSN_PROD }}" \
+              -e JWT_PRIVATE_KEY="${{ secrets.JWT_PRIVATE_KEY }}" \
               ${{ secrets.DOCKERHUB_USERNAME }}/hulio-user:latest
           EOF
