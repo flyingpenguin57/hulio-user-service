@@ -121,6 +121,7 @@ jobs:
             # 启动新容器并注入环境变量
             docker run -d \
               --name hulio-user \
+              --network hulio-net \
               -p 8080:8080 \
               -e ENV=PROD \
               -e MYSQL_DSN_PROD="${MYSQL_DSN_PROD}" \
