@@ -30,6 +30,8 @@ you can run mysql script in scripts to init database.
 
 Set the following environment variables before running the service:
 
+- **ENV**: Specify enviroment, PROD for production and TEST for running test cases.
+
 - **MYSQL_DSN_PROD**: MySQL DSN used when `ENV=prod`.
   - Example:
     ```bash
@@ -51,5 +53,8 @@ Set the following environment variables before running the service:
     # load private key (adjust path if needed)
     export JWT_PRIVATE_KEY="$(cat ./scripts/private_key.pem)"
     ```
+
+- **JWT_PRIVATE_KEY_TEST**: Same as JWT_PRIVATE_KEY, which is used for running test cases.
+
 ### Run application
 ENV=prod go run main.go

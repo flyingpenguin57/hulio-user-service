@@ -41,7 +41,7 @@ jobs:
 
       - name: Run DB initialization script
         run: |
-          mysql -h 127.0.0.1 -u root -proot testdb < ./scripts/db/init-test-db.sql
+          mysql -h 127.0.0.1 -u root -proot hulio_user_service_test < ./scripts/db/init-test-db.sql
 
       - name: Start service
         env:
