@@ -104,9 +104,6 @@ jobs:
           ssh-private-key: ${{ secrets.DO_SSH_KEY }}
 
       - name: Deploy to DigitalOcean
-        env:
-          MYSQL_DSN_PROD: ${{ secrets.MYSQL_DSN_PROD }}
-          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
         run: |
           ssh -o StrictHostKeyChecking=no root@152.42.206.237 << 'EOF'
             #登陆docker
