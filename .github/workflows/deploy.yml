@@ -123,8 +123,6 @@ jobs:
               --name hulio-user \
               --network hulio-net \
               -p 8080:8080 \
-              -e ENV=PROD \
-              -e MYSQL_DSN_PROD="${MYSQL_DSN_PROD}" \
-              -e JWT_PRIVATE_KEY="${JWT_PRIVATE_KEY}" \
+              --env-file /home/deploy/hulio-user.env \
               ${{ secrets.DOCKERHUB_USERNAME }}/hulio-user:latest
           EOF
