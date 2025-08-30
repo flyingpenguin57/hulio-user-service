@@ -109,6 +109,9 @@ jobs:
           JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY }}
         run: |
           ssh -o StrictHostKeyChecking=no root@152.42.206.237 << 'EOF'
+            #登陆docker
+            echo "${{ secrets.DOCKERHUB_TOKEN }}" | docker login -u "${{ secrets.DOCKERHUB_USERNAME }}" --password-stdin
+
             # 拉取最新镜像
             docker pull ${{ secrets.DOCKERHUB_USERNAME }}/hulio-user:latest
 
