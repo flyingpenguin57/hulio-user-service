@@ -32,13 +32,13 @@ Set the following environment variables before running the service:
 
 - **ENV**: Specify enviroment, PROD for production and TEST for running test cases.
 
-- **MYSQL_DSN_PROD**: MySQL DSN used when `ENV=prod`.
+- **MYSQL_DSN_PROD**: MySQL DSN used when `ENV=PROD`.
   - Example:
     ```bash
     export MYSQL_DSN_PROD="user:password@tcp(127.0.0.1:3306)/hulio_user?charset=utf8mb4&parseTime=True&loc=Local"
     ```
 
-- **MYSQL_DSN_TEST**: MySQL DSN used when `ENV=test`.
+- **MYSQL_DSN_TEST**: MySQL DSN used when `ENV=TEST`.
   - Example:
     ```bash
     export MYSQL_DSN_TEST="user:password@tcp(127.0.0.1:3306)/hulio_user_test?charset=utf8mb4&parseTime=True&loc=Local"

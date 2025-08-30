@@ -55,6 +55,9 @@ jobs:
           sleep 5
 
       - name: Run integration tests
+        env:
+          ENV: "TEST"
+          JWT_PRIVATE_KEY: ${{ secrets.JWT_PRIVATE_KEY_TEST }}
         run: go test ./... -v
 
   build-and-push:
