@@ -57,4 +57,7 @@ Set the following environment variables before running the service:
 - **JWT_PRIVATE_KEY_TEST**: Same as JWT_PRIVATE_KEY, which is used for running test cases.
 
 ### Run application
+please inject enviromental variables [JWT_PRIVATE_KEY, MYSQL_DSN_PROD] before run application
+、、、bash
 ENV=prod go run main.go
+```
