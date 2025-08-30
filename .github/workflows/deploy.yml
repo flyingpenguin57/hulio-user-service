@@ -110,7 +110,7 @@ jobs:
         run: |
           ssh -o StrictHostKeyChecking=no root@152.42.206.237 << 'EOF'
             # 拉取最新镜像
-            docker pull hulio-user:latest
+            docker pull ${{ secrets.DOCKERHUB_USERNAME }}/hulio-user:latest
 
             # 停掉旧容器
             docker rm -f hulio-user || true
