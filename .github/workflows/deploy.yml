@@ -125,5 +125,5 @@ jobs:
               -e ENV=PROD \
               -e MYSQL_DSN_PROD="${MYSQL_DSN_PROD}" \
               -e JWT_PRIVATE_KEY="${JWT_PRIVATE_KEY}" \
-              hulio-user:latest
+              ${{ secrets.DOCKERHUB_USERNAME }}/hulio-user:latest
           EOF
