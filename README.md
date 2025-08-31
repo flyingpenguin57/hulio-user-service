@@ -58,6 +58,6 @@ Set the following environment variables before running the service:
 
 ### Run application
 please inject enviromental variables [JWT_PRIVATE_KEY, MYSQL_DSN_PROD] before run application
-、、、bash
+```bash
 ENV=prod go run main.go
 ```
