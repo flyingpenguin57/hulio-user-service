@@ -19,6 +19,8 @@ type User struct {
 	Avatar    string    `gorm:"column:avatar;type:varchar(255)" json:"avatar"`
 	Email     string    `gorm:"column:email;type:varchar(255)" json:"email"`
 	Phone     string    `gorm:"column:phone;type:varchar(50)" json:"phone"`
+	Status    int       `gorm:"column:status;type:int;not null;default:1" json:"status"`
+	From      int       `gorm:"column:from;type:int;not null;default:0" json:"from"`
 	Extinfo   string    `gorm:"column:extinfo;type:text" json:"extinfo"`
 	CreatedAt time.Time `gorm:"column:created_at;type:datetime;autoCreateTime" json:"created_at"`
 	UpdatedAt time.Time `gorm:"column:updated_at;type:datetime;autoUpdateTime" json:"updated_at"`

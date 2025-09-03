@@ -12,6 +12,8 @@ type RegisterRequest struct {
 	Avatar   string `json:"avatar"`
 	Email    string `json:"email"`
 	Phone    string `json:"phone"`
+	Status   int    `json:"status"`
+	From     int    `json:"from"`
 	Extinfo  string `json:"extinfo"`
 }
 
@@ -21,5 +23,6 @@ type UpdateUserRequest struct {
 	Avatar   string `json:"avatar"`
 	Email    string `json:"email"`
 	Phone    string `json:"phone"`
+	Status   int    `json:"status"`
 	Extinfo  string `json:"extinfo"`
 }

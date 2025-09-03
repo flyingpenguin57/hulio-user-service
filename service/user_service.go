@@ -25,6 +25,18 @@ func Register(request *request.RegisterRequest) error {
 		return err
 	}
 
+	// 设置默认状态为1（正常状态）
+	status := request.Status
+	if status == 0 {
+		status = 1
+	}
+
+	// 设置默认来源为0
+	from := request.From
+	if from == 0 {
+		from = 0
+	}
+
 	user := model.User{
 		Username: request.Username,
 		Password: hashedPwd,
@@ -32,6 +44,8 @@ func Register(request *request.RegisterRequest) error {
 		Avatar:   request.Avatar,
 		Email:    request.Email,
 		Phone:    request.Phone,
+		Status:   status,
+		From:     from,
 		Extinfo:  request.Extinfo,
 	}
 	if err := dao.CreateUser(&user); err != nil {
@@ -126,6 +140,9 @@ func UpdateUser(req *request.UpdateUserRequest, claims *utils.UserClaims) (*User
 	}
 	if req.Phone != "" {
 		user.Phone = req.Phone
+	}
+	if req.Status != 0 {
+		user.Status = req.Status
 	}
 	if req.Extinfo != "" {
 		user.Extinfo = req.Extinfo

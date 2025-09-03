@@ -125,6 +125,8 @@ func register(t *testing.T, username string, password string) response.Response 
 	return doJSON(t, "register", http.MethodPost, "http://localhost:8080/api/v1/user/register", "", httpPayload{
 		"username": username,
 		"password": password,
+		"status":   "1",
+		"from":     "1",
 	})
 }
 
