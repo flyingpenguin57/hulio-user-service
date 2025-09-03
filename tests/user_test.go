@@ -125,8 +125,8 @@ func register(t *testing.T, username string, password string) response.Response 
 	return doJSON(t, "register", http.MethodPost, "http://localhost:8080/api/v1/user/register", "", httpPayload{
 		"username": username,
 		"password": password,
-		"status":   "1",
-		"from":     "1",
+		"status":   1,
+		"from":     1,
 	})
 }
 
@@ -164,7 +164,7 @@ func deleteUser(t *testing.T, token string) response.Response {
 	return doJSON(t, "delete user", http.MethodDelete, "http://localhost:8080/api/v1/user", token, nil)
 }
 
-type httpPayload map[string]string
+type httpPayload map[string]interface{}
 
 func doJSON(t *testing.T, label, method, url, token string, payload httpPayload) response.Response {
 	t.Helper()
